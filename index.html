@@ -1,0 +1,596 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>A კატეგორია</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700&family=Noto+Serif+Georgian:wght@700&display=swap">
+<style>
+/* Layout: one column, sticky header, fixed bottom tab bar, fixed action button over the bar. */
+:root{
+  --bg:#f6f8fb; --surface:#fff; --surface2:#eef2f7; --line:#dfe5ed;
+  --txt:#111924; --dim:#5c6b7e;
+  --accent:#1b5fd9; --ok:#0d7f4c; --bad:#c92f38; --warn:#9a6208;
+  --okbg:#e6f5ec; --badbg:#fdeaeb;
+  --f-disp:"Noto Serif Georgian","Noto Serif",Georgia,serif;
+  --f-body:"Noto Sans Georgian","Segoe UI",system-ui,sans-serif;
+  --r:14px; --bar:60px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d131b; --surface:#161f2a; --surface2:#1e2936; --line:#27333f;
+    --txt:#e7eef6; --dim:#93a3b5;
+    --accent:#5a9dff; --ok:#35c07a; --bad:#ff5f66; --warn:#f0b24a;
+    --okbg:#10312339; --badbg:#3a171b66;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d131b; --surface:#161f2a; --surface2:#1e2936; --line:#27333f;
+  --txt:#e7eef6; --dim:#93a3b5;
+  --accent:#5a9dff; --ok:#35c07a; --bad:#ff5f66; --warn:#f0b24a;
+  --okbg:#10312339; --badbg:#3a171b66;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  margin:0; background:var(--bg); color:var(--txt);
+  font-family:var(--f-body); font-size:16px; line-height:1.55;
+  padding-block:0 calc(var(--bar) + 18px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  overflow-x:hidden;
+}
+body.acting{padding-bottom:calc(var(--bar) + 80px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:30;background:var(--bg)}
+.wrap{max-width:720px;margin:0 auto}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);
+  display:flex;align-items:center;gap:10px;padding-block:12px 10px;
+  border-bottom:1px solid var(--line);margin-bottom:16px}
+header .ttl{font-family:var(--f-disp);font-size:17px;font-weight:700;flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header .side{font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+.iconbtn{width:36px;height:36px;flex:0 0 36px;border:1px solid var(--line);background:var(--surface);
+  color:var(--txt);border-radius:10px;font-size:17px;display:flex;align-items:center;justify-content:center}
+
+h2{font-family:var(--f-disp);font-size:16px;margin:24px 0 10px;font-weight:700}
+.lead{color:var(--dim);font-size:14px;margin:0 0 4px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px;margin-bottom:12px}
+.center{text-align:center}
+.mut{color:var(--dim)}
+.big{font-family:var(--f-disp);font-size:34px;font-weight:700;line-height:1.1;
+  font-variant-numeric:tabular-nums}
+
+button{font-family:inherit;font-size:16px;cursor:pointer;border:none;border-radius:12px;color:var(--txt)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{background:var(--accent);color:#fff;font-weight:700;padding:15px 18px;width:100%;min-height:52px}
+.btn.sec{background:var(--surface);color:var(--txt);border:1px solid var(--line);font-weight:600}
+.btn.sm{padding:10px 14px;font-size:14px;min-height:44px}
+
+.bar2{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-top:9px}
+.bar2 i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .3s}
+.pct{font-size:12.5px;color:var(--dim);margin-top:5px;font-variant-numeric:tabular-nums}
+.pill{font-size:11.5px;background:var(--surface2);color:var(--dim);padding:2px 9px;
+  border-radius:999px;display:inline-block}
+
+/* block rows */
+.blk{display:flex;align-items:flex-start;gap:13px;background:var(--surface);
+  border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:var(--r);padding:14px;margin-bottom:10px;width:100%;text-align:left;
+  min-height:52px}
+.blk.done{border-left-color:var(--ok)}
+.blk .ic{font-size:25px;flex:0 0 30px;line-height:1.3}
+.blk .mid{flex:1;min-width:0}
+.blk .mid>span{display:block}
+.blk .nm{font-weight:700;font-size:15.5px;line-height:1.35}
+.blk .hint{color:var(--dim);font-size:13px;margin-top:4px}
+
+.alert{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  background:var(--badbg);border:1px solid var(--bad);border-radius:var(--r);
+  padding:14px;margin-bottom:14px;min-height:52px}
+.alert .n{font-family:var(--f-disp);font-size:24px;font-weight:700;color:var(--bad)}
+.alert .tx{flex:1;min-width:0;font-size:14px}
+
+/* question */
+.qmeta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tag{font-size:11.5px;background:var(--surface2);color:var(--dim);padding:3px 9px;border-radius:999px}
+.tag.a{background:transparent;border:1px solid var(--warn);color:var(--warn)}
+.qimg{width:100%;max-width:100%;max-height:44vh;object-fit:contain;border-radius:10px;
+  display:block;background:#15242b;margin-bottom:12px}
+.qtxt{font-size:16.5px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.ans{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;
+  background:var(--surface);border:1px solid var(--line);
+  padding:13px 14px;margin-bottom:9px;border-radius:12px;font-size:15.5px;line-height:1.45;
+  min-height:52px}
+.ans .n{flex:0 0 26px;height:26px;border-radius:8px;background:var(--surface2);color:var(--dim);
+  font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ans .tx{flex:1;min-width:0}
+.ans.ok{border-color:var(--ok);background:var(--okbg)}
+.ans.ok .n{background:var(--ok);color:#fff}
+.ans.bad{border-color:var(--bad);background:var(--badbg)}
+.ans.bad .n{background:var(--bad);color:#fff}
+.ans:disabled{opacity:1;cursor:default}
+.exp{background:var(--surface2);border-left:3px solid var(--accent);border-radius:10px;
+  padding:13px;font-size:14px;color:var(--txt);margin-top:14px;white-space:pre-line}
+.exp b{display:block;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:5px;font-weight:600}
+.sgs{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.sg{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;
+  width:58px;height:58px}
+.sg img{width:100%;height:100%;object-fit:contain;display:block}
+
+/* fixed action */
+.action{position:fixed;left:0;right:0;z-index:25;
+  bottom:calc(var(--bar) + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(to top,var(--bg) 70%,transparent);
+  padding-top:14px;padding-bottom:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px))}
+.action .inner{max-width:720px;margin:0 auto}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:28;background:var(--surface);
+  border-top:1px solid var(--line);display:flex;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  padding-left:max(0px,env(safe-area-inset-left,0px));
+  padding-right:max(0px,env(safe-area-inset-right,0px))}
+.tabs button{flex:1;background:none;border-radius:0;padding:9px 2px 10px;color:var(--dim);
+  font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;
+  height:var(--bar)}
+.tabs button.on{color:var(--accent)}
+.tabs .ic{font-size:19px;line-height:1}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+td{padding:10px 2px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td:last-child{text-align:right;font-weight:700;color:var(--accent);padding-left:14px;
+  font-variant-numeric:tabular-nums}
+.rule{display:flex;justify-content:space-between;gap:12px;padding:11px 0;
+  border-bottom:1px solid var(--line);font-size:14.5px}
+.rule:last-child{border-bottom:none}
+.rule .r{color:var(--dim);font-size:13px;white-space:nowrap;text-align:right}
+.yes{color:var(--ok);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+
+/* signs */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:9px}
+.sitem{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px;
+  text-align:center;width:100%}
+.sitem .im{background:#fff;border-radius:8px;padding:6px;height:60px;display:flex;
+  align-items:center;justify-content:center}
+.sitem img{max-width:100%;max-height:100%}
+.sitem .lb{font-size:10.5px;color:var(--dim);margin-top:6px;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+input[type=search]{width:100%;background:var(--surface);border:1px solid var(--line);color:var(--txt);
+  padding:13px;border-radius:12px;font-family:inherit;font-size:16px;margin-bottom:14px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:#0009;display:flex;align-items:flex-end;
+  justify-content:center;z-index:100;padding:0}
+.modal .inner{background:var(--surface);border-top:1px solid var(--line);
+  border-radius:18px 18px 0 0;padding:20px;width:100%;max-width:480px;max-height:86vh;
+  overflow:auto;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+.modal .imbox{background:#fff;border-radius:12px;padding:14px;height:130px;display:flex;
+  align-items:center;justify-content:center;margin-bottom:14px}
+.modal .imbox img{max-height:100%;max-width:100%}
+@media (min-width:560px){ .modal{align-items:center;padding:20px}
+  .modal .inner{border-radius:18px;border:1px solid var(--line);padding-bottom:20px} }
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;
+  text-align:center}
+.stat .v{font-family:var(--f-disp);font-size:24px;font-weight:700}
+.stat .l{font-size:12px;color:var(--dim)}
+ol.plan{padding-left:20px;margin:0}
+ol.plan li{margin-bottom:13px;font-size:14.5px;line-height:1.6}
+ol.plan li:last-child{margin-bottom:0}
+ol.plan b{color:var(--accent)}
+.hidden{display:none !important}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <button class="iconbtn hidden" id="back" aria-label="უკან">←</button>
+    <div class="ttl" id="htitle">A კატეგორია</div>
+    <div class="side" id="hside"></div>
+    <button class="iconbtn" id="theme" aria-label="თემის შეცვლა">◐</button>
+  </header>
+  <main id="app"></main>
+</div>
+
+<div class="action hidden" id="actbar"><div class="inner"><button class="btn" id="actbtn"></button></div></div>
+
+<div class="tabs" id="tabs">
+  <button data-go="home"><span class="ic">🏠</span>გეგმა</button>
+  <button data-go="learn"><span class="ic">📚</span>სწავლა</button>
+  <button data-go="cheat"><span class="ic">🔢</span>ციფრები</button>
+  <button data-go="signs"><span class="ic">🚸</span>ნიშნები</button>
+  <button data-go="exam"><span class="ic">⏱</span>გამოცდა</button>
+</div>
+
+<script src="data.js"></script>
+<script>
+const D = window.DATA, QS = D.questions;
+const SIGN = {}; D.signs.forEach(s => SIGN[s.id] = s);
+const app = document.getElementById('app');
+const actbar = document.getElementById('actbar'), actbtn = document.getElementById('actbtn');
+
+/* ---- persistence ---- */
+const KEY = 'pravaA.v1';
+let S = (() => { try { const r = JSON.parse(localStorage.getItem(KEY)); if (r && r.q) return r; } catch(e){} return {q:{}, exam:[]}; })();
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+
+const LEARNED = 2;
+const st = id => S.q[id] || {s:0, w:0};
+const isLearned = id => st(id).s >= LEARNED;
+const blockQs = b => QS.filter(q => q.b === b);
+const missed = () => QS.filter(q => st(q.id).w > 0 && !isLearned(q.id));
+const learnedCount = () => QS.filter(q => isLearned(q.id)).length;
+
+/* ---- theme toggle ---- */
+document.getElementById('theme').onclick = () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const dark = cur ? cur === 'dark'
+    : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  try { localStorage.setItem(KEY + '.theme', dark ? 'light' : 'dark'); } catch(e){}
+};
+try { const t = localStorage.getItem(KEY + '.theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch(e){}
+
+/* ---- helpers ---- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.random()*(i+1)|0; [a[i],a[j]] = [a[j],a[i]]; } return a; };
+const pct = (n,d) => d ? Math.round(n * 100 / d) : 0;
+function head(title, side, back){
+  document.getElementById('htitle').textContent = title;
+  document.getElementById('hside').innerHTML = side || '';
+  const b = document.getElementById('back');
+  b.classList.toggle('hidden', !back);
+  b.onclick = back || null;
+}
+function act(label, fn){
+  if (!label){ actbar.classList.add('hidden'); document.body.classList.remove('acting'); return; }
+  actbtn.textContent = label; actbtn.onclick = fn;
+  actbar.classList.remove('hidden'); document.body.classList.add('acting');
+}
+
+/* ---- router ---- */
+let view = 'home', session = null;
+const VIEWS = {home:vHome, learn:vLearn, cheat:vCheat, signs:vSigns, exam:vExam, play:vPlay};
+function go(v){ view = v; session = null; render(); scrollTo(0,0); }
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => go(b.dataset.go));
+function render(){
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.go === view));
+  act(null);
+  VIEWS[view]();
+}
+
+/* ---- 1. plan ---- */
+function vHome(){
+  const done = learnedCount(), total = QS.length;
+  head('A კატეგორია', `${done}/${total}`);
+  app.innerHTML = `
+  <p class="lead">738 ბილეთი, ერთ დღეში გასავლელად დალაგებული. ყველაფერი ოფლაინ მუშაობს.</p>
+  <div class="card center">
+    <div class="big">${pct(done,total)}%</div>
+    <div class="pct">${done} ნასწავლი ${total}-დან</div>
+    <div class="bar2"><i style="width:${pct(done,total)}%"></i></div>
+  </div>
+  <h2>დღის გეგმა</h2>
+  <div class="card"><table>
+    <tr><td>1. ნიშნები <span class="mut">(ჯერ „ნიშნები" ჩანართი გადაათვალიერე)</span></td><td>2,5 სთ</td></tr>
+    <tr><td>2. შუქნიშანი, მარეგულირებელი, გზაჯვარედინი</td><td>1,5 სთ</td></tr>
+    <tr><td>3. მოტო-სპეციფიკა <span class="mut">(აქ იჭრებიან)</span></td><td>1 სთ</td></tr>
+    <tr><td>4. სამედიცინო დახმარება</td><td>1,5 სთ</td></tr>
+    <tr><td>5. ეკო + უსაფრთხოება <span class="mut">(სწრაფად, ლოგიკაა)</span></td><td>1 სთ</td></tr>
+    <tr><td>6. დანარჩენი წესები</td><td>1,5 სთ</td></tr>
+    <tr><td>7. ციფრები + შეცდომები + გამოცდა</td><td>1,5 სთ</td></tr>
+  </table></div>
+  <h2>როგორ მუშაობს</h2>
+  <div class="card"><ol class="plan">
+    <li>ბილეთი <b>„ნასწავლია" მხოლოდ ზედიზედ 2 სწორი პასუხის მერე.</b> შეცდომისას იგივე ბილეთი იმავე სესიაში დაგიბრუნდება.</li>
+    <li>ყველა შეცდომა ცალკე გროვდება — <b>ყოველი ბლოკის მერე გაიარე მხოლოდ ისინი.</b></li>
+    <li><b>ციფრები</b> ერთადერთია, რაც ნამდვილად დასაზეპირებელია. გადაიკითხე დილით და გამოცდის წინ.</li>
+    <li>ბოლოს <b>გამოცდა</b> — 30 კითხვა 30 წუთში. გაიმეორე სანამ 27+ არ გექნება.</li>
+  </ol></div>
+  <h2>თუ პასუხი არ იცი</h2>
+  <div class="card">
+    <div class="rule"><span>პასუხი იწყება <span class="no">„მხოლოდ…"</span>-ით</span><span class="r">სწორია 19% — გამორიცხე</span></div>
+    <div class="rule"><span><span class="yes">„ამ ბილეთში ჩამოთვლილი ყველა"</span></span><span class="r">სწორია 87% — მონიშნე</span></div>
+    <div class="rule"><span><span class="yes">„აკრძალულია / ეკრძალება / ვალდებულია"</span></span><span class="r">78–92%</span></div>
+    <div class="rule"><span><span class="no">„არ ეკრძალება / არ არის ვალდებული"</span></span><span class="r">15–26% — მახე</span></div>
+    <div class="rule"><span>ეკო და უსაფრთხოება</span><span class="r">ყველაზე ფრთხილი პასუხი</span></div>
+    <div class="rule"><span>პასუხის ნომერი ან სიგრძე</span><span class="r">არაფერს ამბობს</span></div>
+  </div>
+  <div style="height:12px"></div>
+  <button class="btn sec sm" onclick="resetAll()">პროგრესის განულება</button>`;
+}
+function resetAll(){
+  if (confirmBox('მთელი პროგრესი წაიშლება.', () => { S = {q:{}, exam:[]}; save(); render(); })) return;
+}
+
+/* ---- 2. blocks ---- */
+function vLearn(){
+  head('სასწავლო ბლოკები', `${learnedCount()}/${QS.length}`);
+  const m = missed();
+  let h = m.length
+    ? `<button class="alert" onclick="startMissed()"><span class="n">${m.length}</span>
+        <span class="tx"><b>შეცდომა გასამეორებელი</b><br><span class="mut">ბლოკის დასრულების მერე ყოველთვის აქ შემოდი</span></span>
+        <span class="mut">→</span></button>`
+    : '';
+  D.blocks.forEach(b => {
+    const qs = blockQs(b.id), d = qs.filter(q => isLearned(q.id)).length;
+    h += `<button class="blk ${d === qs.length ? 'done' : ''}" onclick="startBlock(${b.id})">
+      <span class="ic">${b.icon}</span>
+      <span class="mid">
+        <span class="nm">${b.id}. ${esc(b.name)}</span>
+        <span class="hint">${esc(b.hint)}</span>
+        <span class="bar2"><i style="width:${pct(d, qs.length)}%"></i></span>
+        <span class="pct">${d} / ${qs.length} ნასწავლი · <span class="pill">${esc(b.time)}</span></span>
+      </span></button>`;
+  });
+  app.innerHTML = h;
+}
+
+/* ---- session ---- */
+function startSession(queue, title, back, exam){
+  if (!queue.length){ toast('ამ ბლოკში ყველაფერი ნასწავლია 🎉'); return; }
+  session = {queue, i:0, title, back, right:0, wrong:0, answered:false, exam:!!exam,
+             end: exam ? Date.now() + 30*60000 : 0};
+  view = 'play'; render(); scrollTo(0,0);
+}
+function startBlock(b){
+  const blk = D.blocks[b-1];
+  startSession(shuffle(blockQs(b).filter(q => !isLearned(q.id))), blk.icon + ' ' + blk.name, 'learn');
+}
+function startMissed(){ startSession(shuffle(missed()), '🔁 შეცდომები', 'learn'); }
+function startExam(){ startSession(shuffle(QS).slice(0,30), '⏱ გამოცდა', 'exam', true); }
+
+function vPlay(){
+  const se = session;
+  if (se.i >= se.queue.length) return vDone();
+  const q = se.queue[se.i];
+  head(se.title, se.exam
+      ? `<span id="clk">30:00</span> · ${se.i + 1}/30`
+      : `დარჩა ${se.queue.length - se.i}`,
+    () => go(se.back));
+  app.innerHTML = `
+    <div class="bar2" style="margin:-4px 0 14px"><i style="width:${pct(se.i, se.queue.length)}%"></i></div>
+    <div class="card">
+      <div class="qmeta">
+        <span class="tag">#${q.id}</span>
+        <span class="tag">${esc(q.t)}</span>
+        ${q.ao ? '<span class="tag a">A-სპეციფიკური</span>' : ''}
+      </div>
+      ${q.img ? `<img class="qimg" src="img/${q.img}" alt="ბილეთის სურათი">` : ''}
+      <div class="qtxt">${esc(q.q)}</div>
+      <div id="answers">${q.a.map(a => `
+        <button class="ans" data-n="${a.n}" onclick="pick(${a.n})">
+          <span class="n">${a.n}</span><span class="tx">${esc(a.t)}</span>
+        </button>`).join('')}</div>
+      <div id="after"></div>
+    </div>`;
+  if (se.exam) tick();
+}
+function pick(n){
+  const se = session; if (se.answered) return;
+  se.answered = true;
+  const q = se.queue[se.i];
+  const ok = q.a.find(a => a.n === n).r;
+  const rec = Object.assign({s:0, w:0}, S.q[q.id]);
+  if (ok){ rec.s++; se.right++; } else { rec.s = 0; rec.w++; se.wrong++; }
+  S.q[q.id] = rec; save();
+
+  document.querySelectorAll('#answers .ans').forEach(b => {
+    const num = +b.dataset.n;
+    b.disabled = true;
+    if (q.a.find(x => x.n === num).r) b.classList.add('ok');
+    else if (num === n) b.classList.add('bad');
+  });
+  if (!ok && !se.exam) se.queue.splice(Math.min(se.i + 4, se.queue.length), 0, q);
+
+  if (!se.exam){
+    const sgs = q.sg.filter(id => SIGN[id]);
+    document.getElementById('after').innerHTML =
+      `<div class="exp"><b>განმარტება</b>${esc(q.e)}</div>` +
+      (sgs.length ? `<div class="sgs">${sgs.map(id =>
+        `<button class="sg" onclick="showSign('${id}')"><img src="${SIGN[id].img}" alt=""></button>`).join('')}</div>` : '');
+  }
+  const last = se.i + 1 >= se.queue.length;
+  act(last ? 'დასრულება' : 'შემდეგი →', next);
+}
+function next(){
+  if (session.exam && session.i + 1 >= session.queue.length){ session.i++; clearInterval(clk); return finishExam(); }
+  session.i++; session.answered = false; render(); scrollTo(0,0);
+}
+
+function vDone(){
+  const se = session;
+  head(se.exam ? 'გამოცდის შედეგი' : 'დასრულდა', '', () => go(se.back));
+  if (se.exam){
+    const pass = se.right >= 27;
+    app.innerHTML = `
+      <div class="card center">
+        <div style="font-size:44px;line-height:1">${pass ? '✅' : '❌'}</div>
+        <div class="big">${se.right} / 30</div>
+        <p class="lead">${pass ? 'ასე რომ ჩააბარო, გაიმეორე კიდევ ერთხელ.' : '27+ გჭირდება. გაიარე შეცდომები და სცადე ისევ.'}</p>
+      </div>
+      <button class="btn" onclick="startExam()">კიდევ ერთი გამოცდა</button>
+      <div style="height:9px"></div>
+      <button class="btn sec" onclick="go('learn')">შეცდომების გავლა</button>`;
+  } else {
+    const m = missed().length;
+    app.innerHTML = `
+      <div class="card center">
+        <div style="font-size:44px;line-height:1">🎉</div>
+        <div class="big">${pct(se.right, se.right + se.wrong)}%</div>
+        <p class="lead">${se.right} სწორი · ${se.wrong} შეცდომა</p>
+      </div>
+      ${m ? `<button class="btn" onclick="startMissed()">შეცდომების გამეორება (${m})</button><div style="height:9px"></div>` : ''}
+      <button class="btn sec" onclick="go('learn')">ბლოკების სიაში</button>`;
+  }
+  session = null;
+}
+
+/* ---- 3. numbers ---- */
+const NUMS = [
+  ['დისტანცია — დასახლებული პუნქტი','2 წმ'],
+  ['დისტანცია — დაუსახლებელი','3 წმ'],
+  ['დისტანცია — მოყინული, დასახლებული','6 წმ'],
+  ['დისტანცია — მოყინული, დაუსახლებელი','9 წმ'],
+  ['„დგომა" = მოძრაობის შეწყვეტა','&gt; 5 წთ'],
+  ['„არასაკმარისი ხილვადობა"','&lt; 300 მ'],
+  ['მოტოციკლი ავტომაგისტრალზე (A)','80 კმ/სთ'],
+  ['AM კატეგორია','45 კმ/სთ'],
+  ['A1 ქვეკატეგორია','125 სმ³ / 11 კვტ'],
+  ['მოპედის მართვის ასაკი','16 წლიდან'],
+  ['„ნელმავალი" სატრანსპორტო საშუალება','≤ 40 კმ/სთ'],
+  ['საავარიო ნიშანი — დასახლებულში','15 მ'],
+  ['საავარიო ნიშანი — დაუსახლებელში','30 მ'],
+  ['გაჩერება ავტობუსის გაჩერებასთან','&lt; 15 მ ❌'],
+  ['შორი შუქის გამორთვა','150 მ'],
+  ['მოტოთი ტვირთის გადმოშვერა','&gt; 0,5 მ ❌'],
+  ['ხისტი ბუქსირება — მანძილი','4 მ'],
+  ['მოტო/მოპედის პროტექტორი','&lt; 0,8 მმ ❌'],
+  ['ველო/მოპედის კოლონა — ჯგუფში','მაქს. 10'],
+  ['მაფრთხილებელი ნიშანი — დასახლებულში','50–100 მ'],
+  ['მაფრთხილებელი ნიშანი — დაუსახლებელში','150–300 მ'],
+  ['პრიორიტეტის ნიშანი — დაუსახლებელში','150–300 მ'],
+  ['არაგაბარიტული — სიგრძეზე','&gt; 1,0 მ'],
+  ['არაგაბარიტული — გვერდიდან','&gt; 0,4 მ'],
+  ['ჩაფხუტის გარეშე მოძრაობა','100 ლარი'],
+  ['არტერიული სისხლდენა — საშიში ზღვარი','10–15 წთ'],
+  ['ხელოვნური სუნთქვა — პულსის შემოწმება','ყოველ 2 წთ-ში'],
+];
+function vCheat(){
+  head('ციფრები', `${NUMS.length}`);
+  app.innerHTML = `
+  <p class="lead">ერთადერთი, რაც ნამდვილად უნდა დაიზეპირო.</p>
+  <div class="card"><table>${NUMS.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
+  <h2>მარეგულირებლის 4 პოზა</h2>
+  <div class="card"><table>
+    <tr><td>ხელები ჩამოშვებული ან გვერდებზე გაწვდილი</td><td>გვერდიდან:<br>პირდაპირ და მარჯვნივ</td></tr>
+    <tr><td>გულმკერდი ან ზურგი შენსკენ</td><td>ყველასთვის ❌</td></tr>
+    <tr><td>ხელი ზევით აწეული</td><td>ყველასთვის ❌</td></tr>
+    <tr><td>მარჯვენა ხელი წინ გაწვდილი</td><td>მარცხნიდან: ყველა მხარეს<br>გულმკერდიდან: მხოლოდ მარჯვნივ<br>ზურგიდან: ❌</td></tr>
+  </table></div>
+  <h2>სამედიცინო — თანმიმდევრობა</h2>
+  <div class="card"><table>
+    <tr><td>ყოველთვის პირველი ნაბიჯი</td><td>სასუნთქი გზები</td></tr>
+    <tr><td>სუნთქვა არის, პულსი არის</td><td>გვერდით წოლა</td></tr>
+    <tr><td>სუნთქვა არა, პულსი არის</td><td>მხოლოდ ხელოვნური სუნთქვა</td></tr>
+    <tr><td>სუნთქვა არა, პულსი არა</td><td>სუნთქვა + გულის მასაჟი</td></tr>
+    <tr><td>დამწვრობა</td><td>ბუშტს არ ვხსნით,<br>ტანსაცმელს არ ვაცლით</td></tr>
+    <tr><td>ხერხემლის ეჭვი</td><td>არ ვაბრუნებთ, ვაფიქსირებთ</td></tr>
+    <tr><td>მუცლის ჭრილობა</td><td>ზურგზე, მოხრილი მუხლებით</td></tr>
+  </table></div>`;
+}
+
+/* ---- 4. signs ---- */
+const SGROUPS = {1:'მაფრთხილებელი', 2:'პრიორიტეტის', 3:'ამკრძალავი', 4:'მიმთითებელი',
+                 5:'საინფორმაციო-მაჩვენებელი', 6:'სერვისის', 7:'დამატებითი ინფორმაციის', 8:'დაფები'};
+function vSigns(){
+  head('საგზაო ნიშნები', `${D.signs.length}`);
+  const groups = {};
+  D.signs.forEach(s => { const g = (s.title.match(/^(\d+)/) || [,'8'])[1]; (groups[g] = groups[g] || []).push(s); });
+  let h = `<p class="lead">ბილეთებში რეალურად გამოყენებული ნიშნები. დააჭირე — გაიხსნება განმარტება.</p>
+    <input type="search" id="sq" placeholder="ძებნა…" oninput="filtSigns(this.value)">`;
+  Object.keys(groups).sort((a,b) => a - b).forEach(g => {
+    h += `<h2 data-g="${g}">${SGROUPS[g] || 'სხვა'} <span class="pill">${groups[g].length}</span></h2>
+      <div class="sgrid" data-g="${g}">${groups[g].map(s => `
+        <button class="sitem" data-nm="${esc(s.title.toLowerCase())}" onclick="showSign('${s.id}')">
+          <span class="im"><img src="${s.img}" alt="" loading="lazy"></span>
+          <span class="lb">${esc(s.title.replace(/^[\d.\-]+\s*/, ''))}</span>
+        </button>`).join('')}</div>`;
+  });
+  app.innerHTML = h;
+}
+function filtSigns(v){
+  v = v.trim().toLowerCase();
+  document.querySelectorAll('.sitem').forEach(e => e.classList.toggle('hidden', !!v && !e.dataset.nm.includes(v)));
+  document.querySelectorAll('.sgrid').forEach(g => {
+    const any = [...g.children].some(c => !c.classList.contains('hidden'));
+    g.classList.toggle('hidden', !any);
+    document.querySelector(`h2[data-g="${g.dataset.g}"]`).classList.toggle('hidden', !any);
+  });
+}
+function showSign(id){
+  const s = SIGN[id]; if (!s) return;
+  sheet(`<div class="imbox"><img src="${s.img}" alt=""></div>
+    <div style="font-weight:700;margin-bottom:7px">${esc(s.title)}</div>
+    <div style="font-size:14.5px;color:var(--dim);white-space:pre-line">${esc(s.desc)}</div>`);
+}
+
+/* ---- 5. exam ---- */
+let clk = null;
+function vExam(){
+  head('გამოცდა', '');
+  const hist = S.exam.slice(-8).reverse();
+  app.innerHTML = `
+    <p class="lead">30 შემთხვევითი კითხვა, 30 წუთი. განმარტებები გამორთულია — როგორც ნამდვილზე.</p>
+    <div class="grid2">
+      <div class="stat"><div class="v">30</div><div class="l">კითხვა / 30 წუთი</div></div>
+      <div class="stat"><div class="v">27+</div><div class="l">სამიზნე შედეგი</div></div>
+    </div>
+    <div style="height:12px"></div>
+    <button class="btn" onclick="startExam()">დაწყება</button>
+    ${hist.length ? `<h2>ბოლო შედეგები</h2><div class="card"><table>${
+      hist.map(r => `<tr><td>${esc(r.d)}</td><td>${r.s} / 30</td></tr>`).join('')}</table></div>` : ''}`;
+}
+function tick(){
+  clearInterval(clk);
+  const upd = () => {
+    if (!session || !session.exam) return clearInterval(clk);
+    const e = document.getElementById('clk'); if (!e) return;
+    const ms = session.end - Date.now();
+    if (ms <= 0){ clearInterval(clk); session.i = session.queue.length; return finishExam(); }
+    const s = Math.floor(ms / 1000);
+    e.textContent = String(Math.floor(s / 60)).padStart(2,'0') + ':' + String(s % 60).padStart(2,'0');
+    e.style.color = s < 300 ? 'var(--bad)' : '';
+  };
+  upd(); clk = setInterval(upd, 1000);
+}
+function finishExam(){
+  S.exam.push({d: new Date().toLocaleDateString('ka-GE', {day:'2-digit', month:'2-digit'}) + ' ' +
+    new Date().toLocaleTimeString('ka-GE', {hour:'2-digit', minute:'2-digit'}), s: session.right});
+  save(); render();
+}
+
+/* ---- sheet / toast / confirm ---- */
+function sheet(inner, actions){
+  const m = document.createElement('div');
+  m.className = 'modal';
+  m.onclick = e => { if (e.target === m) m.remove(); };
+  m.innerHTML = `<div class="inner">${inner}<div style="height:16px"></div>
+    ${actions || '<button class="btn sec" data-close>დახურვა</button>'}</div>`;
+  m.querySelectorAll('[data-close]').forEach(b => b.onclick = () => m.remove());
+  document.body.appendChild(m);
+  return m;
+}
+function confirmBox(text, onYes){
+  const m = sheet(`<div style="font-weight:700;margin-bottom:6px">დარწმუნებული ხარ?</div>
+    <div class="mut" style="font-size:14.5px">${esc(text)}</div>`,
+    `<button class="btn" id="cy">დიახ</button><div style="height:9px"></div>
+     <button class="btn sec" data-close>გაუქმება</button>`);
+  m.querySelector('#cy').onclick = () => { m.remove(); onYes(); };
+  return true;
+}
+function toast(msg){
+  sheet(`<div class="center" style="font-size:16px;padding:8px 0">${esc(msg)}</div>`);
+}
+
+/* ---- keyboard ---- */
+addEventListener('keydown', e => {
+  if (view !== 'play' || !session) return;
+  if (/^[1-4]$/.test(e.key)){ const b = document.querySelector(`.ans[data-n="${e.key}"]`); if (b && !b.disabled) b.click(); }
+  else if (e.key === 'Enter' || e.key === ' '){ if (!actbar.classList.contains('hidden')){ e.preventDefault(); actbtn.click(); } }
+});
+
+render();
+</script>

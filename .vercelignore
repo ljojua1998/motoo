@@ -1,0 +1,4 @@
+serve.py
+*.bat
+_*.txt
+.vercelignore
